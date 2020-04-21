@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      (() => {
+          // Create Canvas
+          const myCanvas = document.createElement('canvas');
+          myCanvas.width = 2000;
+          myCanvas.height = 1000;
+          document.body.appendChild(myCanvas);
+          const ctx = myCanvas.getContext('2d');
+
+          // Start drawing
+          function checkIfBelongsToMandelbrotSet(x,y) {
+            let zx = x; //realComponentOfResult
+            let zy = y; //imaginaryComponentOfResult
+            // Set max number of iterations
+            var iteration = 0
+            const maxIterations = 350;
+            while ((zx * zx + zy * zy) < (50**2) && iteration < maxIterations) {
+              const xtmp = (zx * zx + zy + zy) ** ((iteration/2) * Math.cos(iteration * Math.atan2(zy, zx)) + x); 
+              zy = (zx * zx + zy + zy) ** ((iteration/2) * Math.sin(iteration * Math.atan2(zy, zx)) + y); 
+              zx = xtmp;
+
+              iteration = iteration + 1;
+              }
+
+              if (iteration === maxIterations) {
+                return 0;
+              } else {
+                return iteration;
+              }
+          }
+
+          // Set appearance settings
+          const magnificationFactor = 200;
+          const panX = 0.7;
+          const panY = 0.6;
+          for (let x = 0; x < myCanvas.width; x++) {
+            for (let y = 0; y < myCanvas.height; y++) {
+              const belongsToSet = checkIfBelongsToMandelbrotSet(x / magnificationFactor - panX, y / magnificationFactor - panY);
+              if (belongsToSet === 0) {
+                ctx.fillStyle = '#000';
+                // Draw a black pixel
+                ctx.fillRect(x,y, 1,1);
+              } else {
+                ctx.fillStyle = `hsl(0, 100%, ${belongsToSet}%)`;
+                // Draw a colorful pixel
+                ctx.fillRect(x, y, 1, 1);
+              }
+            }
+          }
+      })();
+    </script>
+  </body>
+</html>
