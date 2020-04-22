@@ -17,34 +17,35 @@
             let zy = y; //imaginaryComponentOfResult
             // Set max number of iterations
             var iteration = 0
-            const maxIterations = 500;
-            while ((zx * zx + zy * zy) < (r**2) && iteration < maxIterations) {
-              const xtmp = zx * zx - zy * zy;
-              zy = 2 * zx * zy  + y ;
-
+            const maxIterations = 100;
+            while (zx*zx + zy*zy < (r**2) && iteration < maxIterations) {
+              const xtmp = zx*zx - zy*zy + 0.4;
+              zy = 2*zx*zy - 0.3;
+              zx = xtmp;
               // const xtmp = (zx * zx + zy + zy) ** ((iteration/2) * Math.cos(iteration * Math.atan2(zy, zx)) + x);
               // zy = (zx * zx + zy + zy) ** ((iteration/2) * Math.sin(iteration * Math.atan2(zy, zx)) + y);
-              zx = xtmp;
+              
 
               iteration = iteration + 1;
-              }
+            }
 
               if (iteration === maxIterations) {
-                return 10;
+                return 0;
               } else {
-                return iteration;
+                return (iteration / maxIterations * 100);
               }
+            
           }
 
           // Set appearance settings
-          const magnificationFactor = 300;
-          const panX = 1.0;
-          const panY = 1.0;
+          const magnificationFactor = 200;
+          const panX = 4;
+          const panY = 2;
           for (let x = 0; x < myCanvas.width; x++) {
             for (let y = 0; y < myCanvas.height; y++) {
               const belongsToSet = checkIfBelongsToJuliaSet(x / magnificationFactor - panX, y / magnificationFactor - panY);
               if (belongsToSet === 0) {
-                ctx.fillStyle = '#fff';
+                ctx.fillStyle = '#000';
                 // Draw a black pixel
                 ctx.fillRect(x,y, 1,1);
               } else {
