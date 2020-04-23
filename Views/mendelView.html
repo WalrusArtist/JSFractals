@@ -5,8 +5,8 @@
       (() => {
           // Create Canvas
           const myCanvas = document.createElement('canvas');
-          myCanvas.width = 1920;
-          myCanvas.height = 1080;
+          myCanvas.width = 2000;
+          myCanvas.height = 1000;
           document.body.appendChild(myCanvas);
           const ctx = myCanvas.getContext('2d');
 
@@ -15,10 +15,10 @@
             let realComponentOfResult = x;
             let imaginaryComponentOfResult = y;
             // Set max number of iterations
-            const maxIterations = 350;
+            const maxIterations = 400;
             for (let i = 0; i < maxIterations; i++) {
               const tempRealComponent = realComponentOfResult * realComponentOfResult - imaginaryComponentOfResult * imaginaryComponentOfResult + x;
-              const tempImaginaryComponent = 2.0 * realComponentOfResult * imaginaryComponentOfResult + y;
+              const tempImaginaryComponent = 2 * realComponentOfResult * imaginaryComponentOfResult + y;
               realComponentOfResult = tempRealComponent;
               imaginaryComponentOfResult = tempImaginaryComponent;
               // Return a number as a percentage
@@ -33,7 +33,7 @@
           // Set appearance settings
           const magnificationFactor = 200;
           const panX = 4;
-          const panY = 3;
+          const panY = 2;
           for (let x = 0; x < myCanvas.width; x++) {
             for (let y = 0; y < myCanvas.height; y++) {
               const belongsToSet = checkIfBelongsToMandelbrotSet(x / magnificationFactor - panX, y / magnificationFactor - panY);
@@ -42,7 +42,7 @@
                 // Draw a black pixel
                 ctx.fillRect(x,y, 1,1);
               } else {
-                ctx.fillStyle = `hsl(80, 100%, ${belongsToSet}%)`;
+                ctx.fillStyle = `hsl(580, 100%, ${belongsToSet}%)`;
                 // Draw a colorful pixel
                 ctx.fillRect(x,y, 1,1);
               }
