@@ -40,6 +40,7 @@ class Newton extends Component {
     componentDidMount(){
         this.canvas = this.refs.canvas
         this.ctx = this.canvas.getContext("2d", { alpha: false})
+
         this.drawFractal()
     }
 
@@ -47,11 +48,14 @@ class Newton extends Component {
         this.drawFractal()
     }
 
-    Complex = (r, i) => {
-
+    Complex(r, i) {
+        this.r = r;
+        this.i = i;
     }
 
     ifBelongsToNewtonSet = (x, y) => {
+
+        
         var yo = new Complex(x/500, y/500);
         var ayy = N(yo);
         var ayy2 = N(ayy);
