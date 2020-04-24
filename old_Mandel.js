@@ -1,3 +1,4 @@
+/*
 import React, { Component } from 'react';
 import './setup.css'
 
@@ -95,3 +96,4 @@ class Mandel extends Component {
 }
 
 export default Mandel;
+*/

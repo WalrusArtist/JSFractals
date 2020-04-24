@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './setup.css'
 
-class TEST extends Component {
+class Mandel extends Component {
   constructor(props){
     super(props)
     this.canvas = undefined
@@ -14,9 +14,6 @@ class TEST extends Component {
 
     this.width = 1000
     this.height = 550
-
-    this.mouseclickX = 0
-    this.mouseclickY = 0
   }
 
   componentDidUpdate(){
@@ -26,13 +23,9 @@ class TEST extends Component {
   componentDidMount(){
     this.canvas = this.refs.canvas
     this.ctx = this.canvas.getContext("2d")
-    
     this.imageData = this.ctx.getImageData(0,0, this.width,this.height)
-    
     this.buf = new ArrayBuffer(this.imageData.data.length);
-
     this.buf8 = new Uint8ClampedArray(this.buf);
-    
     this.data = new Uint32Array(this.buf);
 
     this.drawFractal()
@@ -76,4 +69,4 @@ class TEST extends Component {
   }
 }
 
-export default TEST;
+export default Mandel;
