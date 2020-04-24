@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
 import './setup.css'
 
-class Mendel extends Component {
-  constructor(){
-    super()
+class Mandel extends Component {
+  constructor(props){
+    super(props)
     this.canvas = undefined;
     this.ctx = undefined;
 
@@ -49,14 +48,14 @@ class Mendel extends Component {
     let realComponentOfResult = x;
     let imaginaryComponentOfResult = y;
     // Set max number of iterations
-    for (let i = 0; i < this.state.maxIterations; i++) {
+    for (let i = 0; i < this.props.m; i++) {
       const tempRealComponent = realComponentOfResult * realComponentOfResult - imaginaryComponentOfResult * imaginaryComponentOfResult + x;
-      const tempImaginaryComponent = this.state.imaginaryConstant * realComponentOfResult * imaginaryComponentOfResult + y;
+      const tempImaginaryComponent = this.props.i * realComponentOfResult * imaginaryComponentOfResult + y;
       realComponentOfResult = tempRealComponent;
       imaginaryComponentOfResult = tempImaginaryComponent;
       // Return a number as a percentage
       if (realComponentOfResult * imaginaryComponentOfResult > 5) {
-       return (i / this.state.maxIterations * 100);
+       return (i / this.props.m * 100);
       }
     }
     // Return zero if in set
@@ -64,10 +63,10 @@ class Mendel extends Component {
   }
 
   drawFractal = () => {
-    let previous
+    let previous;
     for (let x = 0; x < this.canvas.width; x++) {
       for (let y = 0; y < this.canvas.height; y++) {
-        const belongsToSet = this.checkIfBelongsToMandelbrotSet(x / this.state.magnificationFactor - this.state.panX, y / this.state.magnificationFactor - this.state.panY)
+        const belongsToSet = this.checkIfBelongsToMandelbrotSet(x / this.props.f - this.props.x, y / this.props.f - this.props.y)
         
         if(previous === belongsToSet) {
           this.ctx.fillRect(x,y, 1,1);
@@ -89,62 +88,10 @@ class Mendel extends Component {
     const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY} = this.state
     return (
       <div>
-        <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={2000} height={1000}></canvas>
-        <Form className="formValues">
-          <Form.Input
-          label={`Imaginary Constant: ${imaginaryConstant}`}
-          min={-2}
-          max={4}
-          name='imaginaryConstant'
-          onChange={this.handleChange}
-          step={0.1}
-          type='range'
-          value={imaginaryConstant}
-          />
-           <Form.Input
-          label={`Max Iterations: ${maxIterations}`}
-          min={2}
-          max={300}
-          name='maxIterations'
-          onChange={this.handleChange}
-          step={1}
-          type='range'
-          value={maxIterations}
-          />
-          <Form.Input
-          label={`Magnification Factor: ${magnificationFactor}`}
-          min={100}
-          max={10000}
-          name='magnificationFactor'
-          onChange={this.handleChange}
-          step={100}
-          type='range'
-          value={magnificationFactor}
-          />
-          <Form.Input
-          label={`panX: ${panX}`}
-          min={0}
-          max={5}
-          name='panX'
-          onChange={this.handleChange}
-          step={0.01}
-          type='range'
-          value={panX}
-          />
-          <Form.Input
-          label={`panY: ${panY}`}
-          min={0}
-          max={5}
-          name='panY'
-          onChange={this.handleChange}
-          step={0.01}
-          type='range'
-          value={panY}
-          />
-        </Form>
+        <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={1000} height={550}></canvas>
       </div>
     );
   }
 }
 
-export default Mendel;
+export default Mandel;
