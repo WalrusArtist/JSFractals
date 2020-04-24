@@ -3,22 +3,18 @@ import { Form } from 'semantic-ui-react';
 import './setup.css'
 
 class Mendel extends Component {
-  constructor(props){
-    super(props)
+  constructor(){
+    super()
     this.canvas = undefined;
     this.ctx = undefined;
-    this.imaginaryConstant = undefined;
-    this.onMouseMove = this.onMouseMove.bind(this)
 
+    this.onMouseMove = this.onMouseMove.bind(this)
     this.mouseclickX = 0
     this.mouseclickY = 0
-    this.mouseHolderX = 0
-    this.mouseHolderY = 0
     
   }
 
   onMouseMove(e){
-    console.log(e.nativeEvent)
     if(e.nativeEvent.buttons === 1 && this.mouseclickX === 0){
       this.mouseclickX = e.nativeEvent.offsetX
       this.mouseclickY = e.nativeEvent.offsetY
@@ -68,15 +64,22 @@ class Mendel extends Component {
   }
 
   drawFractal = () => {
+    let previous
     for (let x = 0; x < this.canvas.width; x++) {
       for (let y = 0; y < this.canvas.height; y++) {
-        const belongsToSet = this.checkIfBelongsToMandelbrotSet(x / this.state.magnificationFactor - this.state.panX, y / this.state.magnificationFactor - this.state.panY);
-        if (belongsToSet === 0) {
-          this.ctx.clearRect(x,y, 1,1);
-        } else {
-          this.ctx.fillStyle = `hsl(80, 100%, ${belongsToSet}%)`;
-          // Draw a colorful pixel
+        const belongsToSet = this.checkIfBelongsToMandelbrotSet(x / this.state.magnificationFactor - this.state.panX, y / this.state.magnificationFactor - this.state.panY)
+        
+        if(previous === belongsToSet) {
           this.ctx.fillRect(x,y, 1,1);
+        }else{
+          if (belongsToSet === 0) {
+            this.ctx.clearRect(x,y, 1,1);
+          } else{
+            this.ctx.fillStyle = `hsl(80, 100%, ${belongsToSet}%)`;
+            // Draw a colorful pixel
+            this.ctx.fillRect(x,y, 1,1);
+            previous = belongsToSet
+          }
         }
       }
     }
@@ -86,7 +89,7 @@ class Mendel extends Component {
     const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY} = this.state
     return (
       <div>
-        <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={500} height={250}></canvas>
+        <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={2000} height={1000}></canvas>
         <Form className="formValues">
           <Form.Input
           label={`Imaginary Constant: ${imaginaryConstant}`}
@@ -138,7 +141,7 @@ class Mendel extends Component {
           type='range'
           value={panY}
           />
-          </Form>
+        </Form>
       </div>
     );
   }
