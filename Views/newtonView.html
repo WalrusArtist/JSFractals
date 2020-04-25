@@ -3,12 +3,12 @@
   <body>
     <script>
       (() => {
-          
+
     function Complex(r, i) {
         this.r = r;
         this.i = i;
     }
-    
+
     Complex.prototype.add = function(other) {
         return new Complex(this.r + other.r, this.i + other.i);
     }
@@ -44,7 +44,7 @@
         var top = -bottom;
         var right = Math.floor(myCanvas.width / 2);
         var left = -right;
-        
+
 
         function ifBelongsToNewtonSet(x, y){
             var yo = new Complex(x/500, y/500);

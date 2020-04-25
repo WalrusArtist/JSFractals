@@ -12,33 +12,34 @@
 
           // Start drawing
           function checkIfBelongsToJuliaSet(x,y) {
-            r = 100
+            r = 2236
             let zx = x; //realComponentOfResult
             let zy = y; //imaginaryComponentOfResult
             // Set max number of iterations
             var iteration = 0
             const maxIterations = 100;
-            while (zx*zx + zy*zy < (r**2) && iteration < maxIterations) {
-              const xtmp = (zx*zx + zy*zy) ** ((iteration/2) * Math.cos(iteration * Math.atan2(zy, zx)) + 0.2);
-              zy = (zx*zx + zy*zy) ** ((iteration/2) * Math.sin(iteration * Math.atan2(zy, zx)) + 0.5);
-      
-              zx = xtmp - 0.9999;
+            while (zx*zx + zy*zy <= (r**2) && iteration < maxIterations && !(iteration===maxIterations)) {
+              const tempRealComponent = zx * zx - zy * zy + 2;
+              const tempImaginaryComponent = 2.0 * zx * zy + 1;
+              zx = tempRealComponent;
+              zy = tempImaginaryComponent;
               
-              iteration = iteration + 1;
+              iteration + 1;
             }
 
-              if (iteration === maxIterations) {
+            if (iteration === maxIterations) {
                 return 0;
               } else {
                 return (iteration / maxIterations * 100);
               }
+              
             
           }
 
           // Set appearance settings
-          const magnificationFactor = 80000;
-          const panX = 0.0125;
-          const panY = 0.006125;
+          const magnificationFactor = 200;
+          const panX = 4;
+          const panY = 2;
           for (let x = 0; x < myCanvas.width; x++) {
             for (let y = 0; y < myCanvas.height; y++) {
               const belongsToSet = checkIfBelongsToJuliaSet(x / magnificationFactor - panX, y / magnificationFactor - panY);

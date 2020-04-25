@@ -22,8 +22,6 @@
               const xtmp = zx*zx - zy*zy - 0.9;
               zy = 2*zx*zy + 0.3;
               zx = xtmp;
-              // const xtmp = (zx * zx + zy + zy) ** ((iteration/2) * Math.cos(iteration * Math.atan2(zy, zx)) + x);
-              // zy = (zx * zx + zy + zy) ** ((iteration/2) * Math.sin(iteration * Math.atan2(zy, zx)) + y);
               
               iteration = iteration + 1;
             }
