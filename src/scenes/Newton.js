@@ -1,57 +1,89 @@
 import React, { Component } from 'react';
-import Mandel from './scenes/Mandel';
-import './App.css';
-import Julia from './scenes/Julia';
-import MultiJulia from './scenes/MultiJulia';
-
 import {Form} from 'semantic-ui-react';
+import './setup.css'
 
-class App extends Component {
+class Newton extends Component {
     constructor(){
         super()
+        this.canvas = undefined;
+        this.ctx = undefined;
+
+        this.top = 0;
+        this.right = 0;
+        this.bottom = 0;
+        this.left = 0;
+
         this.onMouseMove = this.onMouseMove.bind(this)
         this.mouseclickX = 0
         this.mouseclickY = 0
     }
-
+    
+    state = {maxIterations: 100, magnificationFactor: 0.3, panX: 4, panY: 2}
+    
     onMouseMove(e){
         if(e.nativeEvent.buttons === 1 && this.mouseclickX === 0){
-        this.mouseclickX = e.nativeEvent.offsetX
-        this.mouseclickY = e.nativeEvent.offsetY
+            this.mouseclickX = e.nativeEvent.offsetX
+            this.mouseclickY = e.nativeEvent.offsetY
         } else if(e.nativeEvent.buttons === 1){
-            let x = this.state.panX + ((e.nativeEvent.offsetX - this.mouseclickX)/(this.state.magnificationFactor * 10))
-            let y = this.state.panY + ((e.nativeEvent.offsetY - this.mouseclickY)/(this.state.magnificationFactor * 10))
+            let x = this.state.panX + ((e.nativeEvent.offsetX - this.mouseclickX)/450)
+            let y = this.state.panY + ((e.nativeEvent.offsetY - this.mouseclickY)/200)
             this.setState({ 
-                panX: x,
-                panY: y
+            panX: x,
+            panY: y
             })
         }else{
             this.mouseclickX = 0
             this.mouseclickY = 0
         }
     }
+    
+    componentDidMount(){
+        this.canvas = this.refs.canvas
+        this.ctx = this.canvas.getContext("2d", { alpha: false})
 
-    state={fractal:0,imaginaryConstant : 2.0, maxIterations : 5.0, magnificationFactor : 100, panX : 3, panY : 1}
-
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
-
-    setFractal = (num) => {
-        this.setState({fractal: num})
+        this.drawFractal()
     }
 
-    renderFractal = () => {
-        const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY} = this.state
-        switch(this.state.fractal){
-            case 0:
-                return(<Mandel i={imaginaryConstant} m={maxIterations} f={magnificationFactor} x={panX} y={panY}/>)
-            case 1:
-                return(<Julia m={maxIterations} f={magnificationFactor} x={panX} y={panY}/>)
-            case 2:
-                return(<MultiJulia/>)
-            case 3:
-                return(<div>NEWTON TO DEVELOP</div>)
-            default:
-                return(<Mandel i={imaginaryConstant} m={maxIterations} f={magnificationFactor} x={panX} y={panY}/>)
+    componentDidUpdate(){
+        this.drawFractal()
+    }
+
+    Complex(r, i) {
+        this.r = r;
+        this.i = i;
+    }
+
+    ifBelongsToNewtonSet = (x, y) => {
+
+        
+        var yo = new Complex(x/500, y/500);
+        var ayy = N(yo);
+        var ayy2 = N(ayy);
+        var n = 0;
+        while (Math.abs(ayy2.r - ayy.r) > 0.000001) {
+                ayy = ayy2;
+                ayy2 = N(ayy2);
+                n++;
+        }
+        return [ayy, n];
+    }
+
+    drawFractal = () => {
+        for (var x = left - 10; x < right + 10; x++) {
+            for (var y = top - 10; y < bottom + 10; y++) {
+                const arr = this.ifBelongsToNewtonSet(x / magnificationFactor - panX, y / magnificationFactor - panY)
+                const belongs = arr[0];
+                const n = arr[1]
+               // console.log(belongs)
+                if (Math.abs(belongs.r - 1) < 0.001) {
+                    setFillStyle(ctx, 0, 198, 255, n/20);
+                } else if (Math.abs(belongs.r + 0.5) < 0.001) {
+                    setFillStyle(ctx, 0, 0, 0, n/20);
+                } else {
+                    setFillStyle(ctx, 255, 255, 255, 1);
+                }
+                ctx.fillRect(x - left, y - top, 1, 1);
+            }
         }
     }
 
@@ -59,15 +91,7 @@ class App extends Component {
         const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY} = this.state
         return (
             <div>
-                <div className="buttonGroup">
-                    <button onClick={() => this.setFractal(0)}>Mandel</button>
-                    <button onClick={() => this.setFractal(1)}>JULIA</button>
-                    <button onClick={() => this.setFractal(2)}>MULTI-JULIA</button>
-                    <button onClick={() => this.setFractal(3)}>NEWTON</button>
-                </div>
-                <div onMouseMove={this.onMouseMove}>
-                     {this.renderFractal()}
-                </div>
+                <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={500} height={250}></canvas>
                 <Form className="formValues">
                     <Form.Input
                     label={`Imaginary Constant: ${imaginaryConstant}`}
@@ -85,7 +109,7 @@ class App extends Component {
                     max={300}
                     name='maxIterations'
                     onChange={this.handleChange}
-                    step={5}
+                    step={1}
                     type='range'
                     value={maxIterations}
                     />
@@ -125,4 +149,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Newton;
