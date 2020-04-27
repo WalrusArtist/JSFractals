@@ -4,34 +4,26 @@ import './setup.css'
 class Julia extends Component {
     constructor(props){
         super(props)
-        this.canvas = undefined;
-        this.ctx = undefined;
+        this.canvas = undefined
+        this.ctx = undefined
+        this.imageData = undefined
+        this.data = undefined
+        this.buf = undefined
+        this.buf8 = undefined
+        this.width = undefined
+        this.height = undefined
+    }
 
-        this.onMouseMove = this.onMouseMove.bind(this)
-        this.mouseclickX = 0
-        this.mouseclickY = 0
-    }
-    
-    onMouseMove(e){
-        if(e.nativeEvent.buttons === 1 && this.mouseclickX === 0){
-            this.mouseclickX = e.nativeEvent.offsetX
-            this.mouseclickY = e.nativeEvent.offsetY
-        } else if(e.nativeEvent.buttons === 1){
-            let x = this.state.panX + ((e.nativeEvent.offsetX - this.mouseclickX)/450)
-            let y = this.state.panY + ((e.nativeEvent.offsetY - this.mouseclickY)/200)
-            this.setState({ 
-            panX: x,
-            panY: y
-            })
-        }else{
-            this.mouseclickX = 0
-            this.mouseclickY = 0
-        }
-    }
     
     componentDidMount(){
+        this.width = this.props.width
+        this.height = this.props.height
         this.canvas = this.refs.canvas
-        this.ctx = this.canvas.getContext("2d", { alpha: false})
+        this.ctx = this.canvas.getContext("2d")
+        this.imageData = this.ctx.getImageData(0,0, this.width,this.height)
+        this.buf = new ArrayBuffer(this.imageData.data.length);
+        this.buf8 = new Uint8ClampedArray(this.buf);
+        this.data = new Uint32Array(this.buf);
         this.drawFractal()
     }
 
@@ -66,24 +58,16 @@ class Julia extends Component {
         for (let x = 0; x < this.canvas.width; x++) {
             for (let y = 0; y < this.canvas.height; y++) {
               const belongsToSet = this.checkIfBelongsToJuliaSet(x / this.props.f - this.props.x, y / this.props.f - this.props.y);
-              if (belongsToSet === 0) {
-                this.ctx.fillStyle = '#000';
-                // Draw a black pixel
-                this.ctx.fillRect(x,y, 1,1);
-              } else {
-                this.ctx.fillStyle = `hsl(20, 200%, ${belongsToSet}%)`;
-                // Draw a colorful pixel
-                this.ctx.fillRect(x, y, 1, 1);
-              }
+              this.data[y * this.width + x] = (belongsToSet*2.25 << 24) | (0 << 16) | (85 << 8) | 255 
             }
-          }
+        }
+        this.imageData.data.set(this.buf8);
+        this.ctx.putImageData(this.imageData, 0, 0);
     }
 
     render() {        
         return (
-            <div>
-                <canvas className="fractalCanvas" ref="canvas" onMouseMove={this.onMouseMove} width={500} height={250}></canvas>
-            </div>
+            <canvas className="fractalCanvas" ref="canvas" width={this.props.width} height={this.props.height}></canvas>
         );
     }
 }

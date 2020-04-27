@@ -8,12 +8,10 @@ class Mandel extends Component {
     this.ctx = undefined
     this.imageData = undefined
     this.data = undefined
-
     this.buf = undefined
     this.buf8 = undefined
-
-    this.width = 1000
-    this.height = 550
+    this.width = undefined
+    this.height = undefined
   }
 
   componentDidUpdate(){
@@ -21,6 +19,8 @@ class Mandel extends Component {
   }
 
   componentDidMount(){
+    this.width = this.props.width
+    this.height = this.props.height
     this.canvas = this.refs.canvas
     this.ctx = this.canvas.getContext("2d")
     this.imageData = this.ctx.getImageData(0,0, this.width,this.height)
@@ -62,9 +62,7 @@ class Mandel extends Component {
 
   render() {
     return (
-      <div>
-        <canvas className="fractalCanvas" ref="canvas" width={this.width} height={this.height}></canvas>
-      </div>
+      <canvas className="fractalCanvas" ref="canvas" width={this.props.width} height={this.props.height}></canvas>
     );
   }
 }
