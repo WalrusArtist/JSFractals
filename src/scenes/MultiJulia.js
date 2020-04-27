@@ -2,31 +2,11 @@ import React, { Component } from 'react';
 import './setup.css'
 
 class MultiJulia extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.canvas = undefined;
         this.ctx = undefined;
 
-        this.onMouseMove = this.onMouseMove.bind(this)
-        this.mouseclickX = 0
-        this.mouseclickY = 0
-    }
-    
-    onMouseMove(e){
-        if(e.nativeEvent.buttons === 1 && this.mouseclickX === 0){
-            this.mouseclickX = e.nativeEvent.offsetX
-            this.mouseclickY = e.nativeEvent.offsetY
-        } else if(e.nativeEvent.buttons === 1){
-            let x = this.state.panX + ((e.nativeEvent.offsetX - this.mouseclickX)/450)
-            let y = this.state.panY + ((e.nativeEvent.offsetY - this.mouseclickY)/200)
-            this.setState({ 
-            panX: x,
-            panY: y
-            })
-        }else{
-            this.mouseclickX = 0
-            this.mouseclickY = 0
-        }
     }
     
     componentDidMount(){
@@ -40,7 +20,7 @@ class MultiJulia extends Component {
     }
 
     checkIfBelongsToJuliaSet = (x,y) => {
-        let r = 2
+        let r = 100
         let zx = x; //realComponentOfResult
         let zy = y; //imaginaryComponentOfResult
         // Set max number of iterations
