@@ -4,7 +4,7 @@ import './setup.css'
 class Mandel extends Component {
   constructor(props){
     super(props)
-    this.canvas = undefined
+    this.canvas = React.createRef()
     this.ctx = undefined
     this.imageData = undefined
     this.data = undefined
@@ -14,6 +14,10 @@ class Mandel extends Component {
     this.height = undefined
   }
 
+  setRef = el => {
+    this.canvas = el
+  }
+
   componentDidUpdate(){
     this.drawFractal()
   }
@@ -21,7 +25,6 @@ class Mandel extends Component {
   componentDidMount(){
     this.width = this.props.width
     this.height = this.props.height
-    this.canvas = this.refs.canvas
     this.ctx = this.canvas.getContext("2d")
     this.imageData = this.ctx.getImageData(0,0, this.width,this.height)
     this.buf = new ArrayBuffer(this.imageData.data.length);
@@ -62,7 +65,7 @@ class Mandel extends Component {
 
   render() {
     return (
-      <canvas className="fractalCanvas" ref="canvas" width={this.props.width} height={this.props.height}></canvas>
+      <canvas className="fractalCanvas" ref={this.setRef} width={this.props.width} height={this.props.height}></canvas>
     );
   }
 }

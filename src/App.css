@@ -5,6 +5,14 @@
   height: 100%;
 }
 
+.anchor{
+  cursor: pointer;
+  position: absolute;
+  background: white;
+  height: 1em;
+  width: 1em;
+}
+
 .buttonGroup{
   position: absolute;
   margin: auto;
@@ -46,10 +54,6 @@
 #formButton{
   border-radius: 0 0.75em 0.75em 0;
   width: 50%;
-}
-
-#formButtonDiv:hover + .formSettingsDiv{
-  width:75%;
 }
 
 #formButtonIcon{

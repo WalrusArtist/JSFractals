@@ -4,6 +4,9 @@ import Mandel from './scenes/Mandel';
 import Julia from './scenes/Julia';
 import MultiJulia from './scenes/MultiJulia';
 
+import sketch from './scenes/TEST'
+import P5Wrapper from 'react-p5-wrapper';
+
 import './App.css';
 
 import {Form, Button, Icon} from 'semantic-ui-react';
@@ -26,8 +29,8 @@ class App extends Component {
         magnificationFactor:0,
         panX:0,
         panY:0,
-        width: 1000,
-        height: 500,
+        width: 700,
+        height: 350,
         isExpanded: false,
         expandIcon: "angle right",
         settingWidth: "0%",
@@ -145,12 +148,14 @@ class App extends Component {
             case 2:
                 return(<MultiJulia/>)
             case 3:
-                return(<div>NEWTON TO DEVELOP</div>)
+                return(<div>
+                    <P5Wrapper sketch={sketch}></P5Wrapper>
+                  </div>)
             default:
                 return(<Mandel i={imaginaryConstant} m={maxIterations} f={magnificationFactor} x={panX} y={panY} width={width} height={height}/>)
         }
     }
-
+    
     render() {
         const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY,expandIcon,settingWidth,isZoomToggle} = this.state
         return (
