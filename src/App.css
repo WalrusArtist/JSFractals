@@ -1,38 +1,57 @@
-.App {
+.blackBackground{
+  position: absolute;
+  background: black;
+  width: 100%;
+  height: 100%;
+}
+
+.buttonGroup{
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  display: inline-block;
   text-align: center;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.formDiv{
+  position: absolute;
+  margin-top: 2%;
+  width: 20%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.formSettingsDiv{
+  text-align: center;
+  background: grey;
+  border-radius: 0 0.75em 0.75em 0;
+  float: left;
+  transition: width 1s;
+  transition-timing-function: ease-out;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.formSettingWrapper{
+  display: inline-block;
+  padding:1em;
 }
 
-.App-link {
-  color: #61dafb;
+.formButtonDiv{
+  margin-top: 30%;
+  width: 25%;
+  height: 25%;
+  float: left;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#formButton{
+  border-radius: 0 0.75em 0.75em 0;
+  width: 50%;
+}
+
+#formButtonDiv:hover + .formSettingsDiv{
+  width:75%;
+}
+
+#formButtonIcon{
+  margin-right: 25%;
 }
