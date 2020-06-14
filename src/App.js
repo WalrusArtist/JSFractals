@@ -12,8 +12,10 @@ class App extends Component {
     constructor(){
         super()
         this.onMouseMove = this.onMouseMove.bind(this)
+        this.onMouseClick = this.onMouseMove.bind(this)
         this.mouseclickX = 0
         this.mouseclickY = 0
+        this.zoom = 0
         this.buttonColor = ['grey','grey','grey','grey']
     }
 
@@ -30,13 +32,23 @@ class App extends Component {
             let y = this.state.panY + ((e.nativeEvent.offsetY - this.mouseclickY)/(this.state.magnificationFactor * 10))
             this.setState({ 
                 panX: Math.round(x * 10000000) / 10000000,
-                panY: Math.round(y * 10000000) / 10000000
+                panY: Math.round(y * 10000000) / 10000000,
+                magnificationFactor: this.state.magnificationFactor + 30
             })
         }else{
             this.mouseclickX = 0
             this.mouseclickY = 0
         }
     }
+
+    // onMouseClick(e){
+    //     for (var i=0; i < 10000; i++) {
+    //        this.zoom += 1
+    //        this.setState({
+    //         magnificationFactor: magnificationFactor + this.zoom
+    //        })
+    //     } 
+    // }
 
     state={
         fractal:null,
@@ -99,7 +111,7 @@ class App extends Component {
         const {imaginaryConstant,maxIterations,magnificationFactor,panX,panY,width,height} = this.state
         switch(this.state.fractal){
             case 0:
-                return(<Mandel i={imaginaryConstant} m={maxIterations} f={magnificationFactor} x={panX} y={panY} width={width} height={height}/>)
+                return(<Mandel i={imaginaryConstant} m={maxIterations} f={magnificationFactor+10} x={panX} y={panY} width={width} height={height}/>)
             case 1:
                 return(<Julia m={maxIterations} f={magnificationFactor} x={panX} y={panY} width={width} height={height}/>)
             case 2:
